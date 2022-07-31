@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+		
+	<bean id="ds" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />	
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.1.100:1521:xe" />	
+		<property name="user" value="c##itbank" />	
+		<property name="password" value="it" />	
+		<property name="maxPoolSize" value="100" />	
+		<property name="maxIdleTime" value="600" />	
+		<property name="idleConnectionTestPeriod" value="300" />	
+	</bean>		
+	
+	<!-- jdbcTemplate 대신 myBatis 프레임워크에서 제공하는 sqlSessionTemplate을 사용 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="ds" />
+	</bean>	
+	
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactory" />
+	</bean>
+	
+	<!-- 
+		<context:component-scan base-package="com.itbank.model" />
+		지정한 패키지에서 @Repository 어노테이션이 붙어있는 클래스를 기본생성자로 객체 생성 후 스프링 빈으로 등록한다
+	 -->
+	
+	
+	<mybatis-spring:scan base-package="com.itbank.model" />
+	<!-- 
+		지정한 패키지에서 interface 형태의 내용을 읽어서 proxy 객체를 생성하고 해당 객체를 스프링 빈으로 등록한다
+		따라서, @Repository 를 작성하지 않아도 상관없다
+	 -->
+		
+</beans>
+
+
+
+
+
+
