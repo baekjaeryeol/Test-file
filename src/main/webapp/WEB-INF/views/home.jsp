@@ -13,6 +13,7 @@
 <h3>version : ${version }</h3>
 
 <a href="member"><button>member</button></a>
+<div class="">수정해서 추가할 내용입니다</div>
 
 </body>
 </html>
